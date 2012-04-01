@@ -1,0 +1,12 @@
+author: p000ison
+database: false
+description: Allows you to enter a DreamWorld/NightMareWorld.
+main: com.davis.p000ison.dev.findplot.FindPlot
+name: FindPlot
+startup: postworld
+url: http://dev.bukkit.org/server-mods/DreamZ/
+version: '0.0'
+depend: [ WorldGuard, WorldEdit ]
+commands:
+  find:
+    description: tmp
