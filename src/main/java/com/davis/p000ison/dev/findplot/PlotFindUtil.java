@@ -22,7 +22,7 @@ public class PlotFindUtil {
     public void findPlot(Player player) {
 
         ArrayList listArray = new ArrayList();
-        RegionManager regionManager = plugin.getWorldGuard().getRegionManager(plugin.getServer().getWorld("Main"));
+        RegionManager regionManager = plugin.getWorldGuard().getRegionManager(player.getWorld());
         for (Map.Entry<String, ProtectedRegion> regionMap : regionManager.getRegions().entrySet()) {
             String name = regionMap.getKey();
             ProtectedRegion region = regionMap.getValue();
