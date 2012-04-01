@@ -17,7 +17,12 @@ public final class SettingsManager {
     private FileConfiguration config;
     private List<String> Admins;
     private List<String> StartWithStrings;
-    
+    private String NoSuchPlot;
+    private String PlotEnter;
+    private int InterX;
+    private int InterY;
+    private int InterZ;
+
     /**
      *
      */
@@ -48,7 +53,11 @@ public final class SettingsManager {
 
         Admins = getConfig().getStringList("Admins");
         StartWithStrings = getConfig().getStringList("StartsWithStrings");
-
+        NoSuchPlot = getConfig().getString("Messages.NoSuchPlot");
+        PlotEnter = getConfig().getString("Messages.PlotEnter");
+        InterX = getConfig().getInt("InterLoc.X");
+        InterY = getConfig().getInt("InterLoc.Y");
+        InterZ = getConfig().getInt("InterLoc.Z");
 
         save();
     }
@@ -87,5 +96,40 @@ public final class SettingsManager {
      */
     public List<String> getStartWithStrings() {
         return StartWithStrings;
+    }
+
+    /**
+     * @return the NoSuchPlot
+     */
+    public String getNoSuchPlot() {
+        return NoSuchPlot;
+    }
+
+    /**
+     * @return the PlotEnter
+     */
+    public String getPlotEnter() {
+        return PlotEnter;
+    }
+
+    /**
+     * @return the InterX
+     */
+    public int getInterX() {
+        return InterX;
+    }
+
+    /**
+     * @return the InterY
+     */
+    public int getInterY() {
+        return InterY;
+    }
+
+    /**
+     * @return the InterZ
+     */
+    public int getInterZ() {
+        return InterZ;
     }
 }

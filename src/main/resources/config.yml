@@ -1,2 +1,6 @@
 Admins: [ p000ison ]
-StartsWithStrings: hs
+StartsWithStrings: [ gs, house ]
+Messages:
+  NoSuchPlot: "Keine Grundstücke in %s frei!"
+  PlotEnter: "Du wurdest zu dem Grundstück: %s teleportiert."
+  

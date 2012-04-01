@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 /**
@@ -22,31 +23,33 @@ public class PlotFindUtil {
         this.plugin = plugin;
     }
 
-    public void findPlot(Player player) {
-
+    public void findPlot(Player player, World world) {
         ArrayList listArray = new ArrayList();
-        String plot = "null";
-        RegionManager regionManager = plugin.getWorldGuard().getRegionManager(player.getWorld());
+        String plot;
+        RegionManager regionManager = plugin.getWorldGuard().getRegionManager(world);
+
         for (Map.Entry<String, ProtectedRegion> regionMap : regionManager.getRegions().entrySet()) {
             String name = regionMap.getKey();
             ProtectedRegion region = regionMap.getValue();
             if (startsWith(name, plugin.getSettingsManager().getStartWithStrings()) && containsOwner(region, plugin.getSettingsManager().getAdmins())) {
                 listArray.add(name);
             }
-
         }
+
         System.out.println(listArray);
         if (listArray.size() > 0) {
             plot = (String) listArray.get(0);
-            player.sendMessage(String.format("Du wurdest zu dem Grundstück: %s teleportiert.", plot));
+            
             Vector MaxVec = regionManager.getRegion(plot).getMaximumPoint();
             Vector MinVec = regionManager.getRegion(plot).getMinimumPoint();
             double X = (MinVec.getX() + MaxVec.getX()) / 2;
             double Z = (MinVec.getZ() + MaxVec.getZ()) / 2;
+            
             System.out.println(plot);
             player.teleport(new Location(player.getWorld(), X, player.getWorld().getHighestBlockYAt((int) X, (int) Z), Z));
+            player.sendMessage(String.format(plugin.getSettingsManager().getPlotEnter(), plot));
         } else {
-            player.sendMessage(String.format("Keine Grundstücke in %s frei!", player.getWorld().getName()));
+            player.sendMessage(String.format(plugin.getSettingsManager().getNoSuchPlot(), player.getWorld().getName()));
         }
     }
 
