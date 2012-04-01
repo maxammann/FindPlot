@@ -31,7 +31,7 @@ public class PlotFindUtil {
         for (Map.Entry<String, ProtectedRegion> regionMap : regionManager.getRegions().entrySet()) {
             String name = regionMap.getKey();
             ProtectedRegion region = regionMap.getValue();
-            if (startsWith(name, plugin.getSettingsManager().getStartWithStrings()) && (containsOwner(region, plugin.getSettingsManager().getAdmins()) || region.getOwners() == null)) {
+            if (startsWith(name, plugin.getSettingsManager().getStartWithStrings()) && (containsOwner(region, plugin.getSettingsManager().getAdmins()) || region.getOwners().getPlayers().isEmpty())) {
                 listArray.add(name);
             }
         }
