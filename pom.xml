@@ -82,6 +82,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+            <version>1.2.13-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>5.5.1-SNAPSHOT</version>
@@ -95,14 +100,12 @@
     <!-- Repositories -->
     <repositories>
         <repository>
-            <id>repobo-snap</id>
-            <url>http://repo.bukkit.org/content/groups/public</url>
+            <id>bukkit-repo</id>
+            <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
         <repository>
-            <url>http://repo1.maven.org/maven2/</url>
-            <id>junit_4</id>
-            <layout>default</layout>
-            <name>Repository for library Library[junit_4]</name>
+            <id>milkbowl-repo</id>
+            <url>http://ci.milkbowl.net/plugin/repository/everything/</url>
         </repository>
         <repository>
             <id>sk89q-mvn2</id>

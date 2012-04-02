@@ -35,22 +35,20 @@ public class PlotFindUtil {
                 listArray.add(name);
             }
         }
-
         System.out.println(listArray);
         if (listArray.size() > 0) {
             plot = (String) listArray.get(0);
-            
-            Vector MaxVec = regionManager.getRegion(plot).getMaximumPoint();
-            Vector MinVec = regionManager.getRegion(plot).getMinimumPoint();
-            double X = (MinVec.getX() + MaxVec.getX()) / 2;
-            double Z = (MinVec.getZ() + MaxVec.getZ()) / 2;
-            
-            System.out.println(plot);
-            player.teleport(new Location(player.getWorld(), X, player.getWorld().getHighestBlockYAt((int) X, (int) Z), Z));
-            player.sendMessage(String.format(plugin.getSettingsManager().getPlotEnter(), plot));
+            player.teleport(calcLoc(regionManager.getRegion(plot).getMinimumPoint(), regionManager.getRegion(plot).getMaximumPoint(), world));
+            player.sendMessage(plugin.color(String.format(plugin.getSettingsManager().getPlotEnter(), plot)));
         } else {
-            player.sendMessage(String.format(plugin.getSettingsManager().getNoSuchPlot(), player.getWorld().getName()));
+            player.sendMessage(plugin.color(String.format(plugin.getSettingsManager().getNoSuchPlot(), player.getWorld().getName())));
         }
+    }
+
+    private Location calcLoc(Vector min, Vector max, World world) {
+        double X = (min.getX() + max.getX()) / 2;
+        double Z = (min.getZ() + max.getZ()) / 2;
+        return new Location(world, X, world.getHighestBlockYAt((int) X, (int) Z), Z);
     }
 
     public boolean containsOwner(ProtectedRegion proRegion, List<String> list) {
