@@ -1,5 +1,6 @@
 package com.davis.p000ison.dev.findplot;
 
+import com.davis.p000ison.dev.findplot.listener.FPPlayerListener;
 import com.davis.p000ison.dev.findplot.manager.SettingsManager;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,7 +24,7 @@ public class FindPlot extends JavaPlugin {
 
     private static final Logger logger = Logger.getLogger("Minecraft");
     private SettingsManager SettingsManager;
-    private PlotFindUtil util;
+    private Util util;
     private static Permission perms = null;
 
     @Override
@@ -32,11 +34,14 @@ public class FindPlot extends JavaPlugin {
     @Override
     public void onEnable() {
         SettingsManager = new SettingsManager(this);
-        util = new PlotFindUtil(this);
+        util = new Util(this);
 
         if (getServer().getPluginManager().getPlugin("Vault") != null) {
             setupPermissions();
         }
+        
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(new FPPlayerListener(this), this);
 
         try {
             MetricsLite metrics = new MetricsLite(this);
@@ -61,13 +66,6 @@ public class FindPlot extends JavaPlugin {
         return (WorldGuardPlugin) plugin;
     }
 
-    /**
-     * @return the SettingsManager
-     */
-    public SettingsManager getSettingsManager() {
-        return SettingsManager;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (sender instanceof Player) {
@@ -77,13 +75,19 @@ public class FindPlot extends JavaPlugin {
                     if (hasPermission(player, "plotfind.command.find")) {
                         util.findPlot(player, player.getWorld());
                     }
-                }
-                if (args.length == 1) {
+                } else if (args.length == 1) {
                     if (args[0].equals("reload")) {
                         if (hasPermission(player, "plotfind.command.reload")) {
                             player.sendMessage(ChatColor.GREEN + "Config reloaded.");
                             this.getSettingsManager().load();
                         }
+                    }
+                } else if (args.length == 2) {
+                    if (args[0].equals("set")) {
+                        getSettingsManager().getPlugin().getConfig().set("Buttons." + args[1] + ".X", getUtil().getTarget(player).getX());
+                        getSettingsManager().getPlugin().getConfig().set("Buttons." + args[1] + ".Y", getUtil().getTarget(player).getY());
+                        getSettingsManager().getPlugin().getConfig().set("Buttons." + args[1] + ".Z", getUtil().getTarget(player).getZ());
+                        getSettingsManager().save();
                     }
                 }
             }
@@ -98,22 +102,24 @@ public class FindPlot extends JavaPlugin {
         return perms != null;
     }
 
-    public static boolean hasPermission(Player player, String permission) {
+    public boolean hasPermission(Player player, String permission) {
         if (perms != null) {
             return perms.has(player, permission);
         }
         return player.hasPermission(permission);
     }
 
-    public String color(String text) {
-        String colourised = text.replaceAll("&(?=[0-9a-fA-FkK])", "\u00a7");
-        return colourised;
-    }
-    
     /**
      * @return the util
      */
-    public PlotFindUtil getUtil() {
+    public Util getUtil() {
         return util;
+    }
+
+    /**
+     * @return the SettingsManager
+     */
+    public SettingsManager getSettingsManager() {
+        return SettingsManager;
     }
 }

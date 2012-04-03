@@ -3,23 +3,27 @@ package com.davis.p000ison.dev.findplot;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 /**
  *
  * @author p000ison
  */
-public class PlotFindUtil {
+public class Util {
 
     private FindPlot plugin;
+    private static final HashSet<Byte> AIR_MATERIALS_TARGET = new HashSet<Byte>();
 
-    public PlotFindUtil(FindPlot plugin) {
+    static {
+        AIR_MATERIALS_TARGET.add((byte) Material.AIR.getId());
+    }
+
+    public Util(FindPlot plugin) {
         this.plugin = plugin;
     }
 
@@ -35,13 +39,12 @@ public class PlotFindUtil {
                 listArray.add(name);
             }
         }
-        System.out.println(listArray);
         if (listArray.size() > 0) {
             plot = (String) listArray.get(0);
             player.teleport(calcLoc(regionManager.getRegion(plot).getMinimumPoint(), regionManager.getRegion(plot).getMaximumPoint(), world));
-            player.sendMessage(plugin.color(String.format(plugin.getSettingsManager().getPlotEnter(), plot)));
+            player.sendMessage(color(String.format(plugin.getSettingsManager().getPlotEnter(), plot)));
         } else {
-            player.sendMessage(plugin.color(String.format(plugin.getSettingsManager().getNoSuchPlot(), player.getWorld().getName())));
+            player.sendMessage(color(String.format(plugin.getSettingsManager().getNoSuchPlot(), player.getWorld().getName())));
         }
     }
 
@@ -66,5 +69,29 @@ public class PlotFindUtil {
             }
         }
         return false;
+    }
+
+    public boolean checkBed(Location loc) {
+        for (String str : plugin.getConfig().getConfigurationSection("Buttons").getKeys(false)) {
+            if ((loc.getX() == plugin.getConfig().getDouble("Buttons." + str + ".X")
+                    && loc.getY() == plugin.getConfig().getDouble("Buttons." + str + ".Y")
+                    && loc.getZ() == plugin.getConfig().getDouble("Buttons." + str + ".Z"))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Location getTarget(final Player player) {
+        final Block block = player.getTargetBlock(AIR_MATERIALS_TARGET, 300);
+        if (block == null) {
+            player.sendMessage("Please target a valid Block!");
+        }
+        return block.getLocation();
+    }
+
+    public String color(String text) {
+        String colourised = text.replaceAll("&(?=[0-9a-fA-FkK])", "\u00a7");
+        return colourised;
     }
 }
