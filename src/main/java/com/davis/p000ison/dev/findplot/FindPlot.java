@@ -85,10 +85,12 @@ public class FindPlot extends JavaPlugin {
                     }
                 } else if (args.length == 2) {
                     if (args[0].equals("set")) {
-                        getSettingsManager().getPlugin().getConfig().set("Buttons." + args[1] + ".X", getUtil().getTarget(player).getX());
-                        getSettingsManager().getPlugin().getConfig().set("Buttons." + args[1] + ".Y", getUtil().getTarget(player).getY());
-                        getSettingsManager().getPlugin().getConfig().set("Buttons." + args[1] + ".Z", getUtil().getTarget(player).getZ());
-                        getSettingsManager().save();
+                        if (hasPermission(player, "plotfind.command.set")) {
+                            getSettingsManager().getPlugin().getConfig().set("Buttons." + args[1] + ".X", getUtil().getTarget(player).getX());
+                            getSettingsManager().getPlugin().getConfig().set("Buttons." + args[1] + ".Y", getUtil().getTarget(player).getY());
+                            getSettingsManager().getPlugin().getConfig().set("Buttons." + args[1] + ".Z", getUtil().getTarget(player).getZ());
+                            getSettingsManager().save();
+                        }
                     }
                 }
             }
