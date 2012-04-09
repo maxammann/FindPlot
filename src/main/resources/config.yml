@@ -1,6 +1,11 @@
 Admins: [ p000ison ]
 StartsWithStrings: [ gs, house ]
 Messages:
-  NoSuchPlot: "Keine Grundstücke in %s frei!"
-  PlotEnter: "Du wurdest zu dem Grundstück: %s teleportiert."
+  NoSuchPlot: "&3There are no free plots in %s"
+  PlotEnter: "&3You got teleportet to %s."
+Buttons:
+  test:
+    X: 0
+    Y: 0
+    Z: 0
   

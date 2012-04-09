@@ -35,6 +35,7 @@ public class Util {
         for (Map.Entry<String, ProtectedRegion> regionMap : regionManager.getRegions().entrySet()) {
             String name = regionMap.getKey();
             ProtectedRegion region = regionMap.getValue();
+            
             if (startsWith(name, plugin.getSettingsManager().getStartWithStrings()) && (containsOwner(region, plugin.getSettingsManager().getAdmins()) || region.getOwners().getPlayers().isEmpty())) {
                 listArray.add(name);
             }
@@ -81,7 +82,7 @@ public class Util {
         }
         return false;
     }
-
+    
     public Location getTarget(final Player player) {
         final Block block = player.getTargetBlock(AIR_MATERIALS_TARGET, 300);
         if (block == null) {

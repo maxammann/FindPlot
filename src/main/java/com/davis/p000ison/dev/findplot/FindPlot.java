@@ -4,6 +4,7 @@ import com.davis.p000ison.dev.findplot.listener.FPPlayerListener;
 import com.davis.p000ison.dev.findplot.manager.SettingsManager;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.milkbowl.vault.permission.Permission;
@@ -22,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class FindPlot extends JavaPlugin {
 
+    private HashMap<Player, Boolean> command = new HashMap<Player, Boolean>();
     private static final Logger logger = Logger.getLogger("Minecraft");
     private SettingsManager SettingsManager;
     private Util util;
@@ -39,7 +41,7 @@ public class FindPlot extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("Vault") != null) {
             setupPermissions();
         }
-        
+
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new FPPlayerListener(this), this);
 
@@ -69,7 +71,7 @@ public class FindPlot extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (sender instanceof Player) {
-            Player player = (Player) sender;
+            final Player player = (Player) sender;
             if (cmd.getName().equalsIgnoreCase("find")) {
                 if (args.length == 0) {
                     if (hasPermission(player, "plotfind.command.find")) {
