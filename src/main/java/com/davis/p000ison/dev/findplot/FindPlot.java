@@ -23,7 +23,6 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class FindPlot extends JavaPlugin {
 
-    private HashMap<Player, Boolean> command = new HashMap<Player, Boolean>();
     private static final Logger logger = Logger.getLogger("Minecraft");
     private SettingsManager SettingsManager;
     private Util util;
